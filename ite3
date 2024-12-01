@@ -1,0 +1,289 @@
+#include<stdio.h>
+#include<stdio.h>
+// defining what is true or false
+#define TRUE 1
+#define FALSE 0
+
+// initializing my functions
+char base();
+int get();
+int blankx();
+int blanky();
+
+
+int main(void){
+
+    // initializing the blannn peice of the puzzle
+    char null[] =" --------- .|000000000|.|000000000|.|000000000|. --------- .";
+   // initializing the display of the puzzle "0" is the one telling where the blank space is in the puzzle
+   //         x =     0          1          2                 y
+   char base[]=" --------- . --------- . --------- \n"
+               "|||     |||.|         |.|000000000|\n"
+               "|||     |||.||||||||  |.|000000000|\n"      // 0
+               "|---------|.|||||||   |.|000000000|\n"
+               " --------- . --------- . --------- \n"
+               " --------- . --------- . --------- \n"
+               "|         |.| |     | |.|       |||\n"
+               "|  ||||||||.|||     |||.|        -|\n"      // 1
+               "|   |||||||.|||     |||.|         |\n"
+               " --------- . --------- . --------- \n"
+               " --------- . --------- . --------- \n"
+               "|||       |.|         |.|         |\n"
+               "|-        |.|   {*}   |.|  _____  |\n"      // 2
+               "|         |.|         |.| |     | |\n"
+               " --------- . --------- . --------- \n";
+
+
+    // a copy of the base that have "." not \n so that it doesnt get buggy
+    char cbase[]=  " --------- . --------- . --------- ."
+                   "|||     |||.|         |.|000000000|."
+                   "|||     |||.||||||||  |.|000000000|."      // 0
+                   "|---------|.|||||||   |.|000000000|."
+                   " --------- . --------- . --------- ."
+                   " --------- . --------- . --------- ."
+                   "|         |.| |     | |.|       |||."
+                   "|  ||||||||.|||     |||.|        -|."      // 1
+                   "|   |||||||.|||     |||.|         |."
+                   " --------- . --------- . --------- ."
+                   " --------- . --------- . --------- ."
+                   "|||       |.|         |.|         |."
+                   "|-        |.|   {*}   |.|  _____  |."      // 2
+                   "|         |.|         |.| |     | |."
+                   " --------- . --------- . --------- .";
+    // a copy of that copy
+    // making moving the puzzle a little easier to code
+    char cbase1[get(cbase)];
+    for (int i=0;i <= get(cbase);i++){
+        cbase1[i]=cbase[i];
+    }
+
+
+    int x_=0,x=0, px,py,stop = 1;
+    int y_=0,y=0,nb=get(base);
+    int j=0,k=0;
+    int fix = 0;
+    char move[]="\0";
+    // printing the base
+    printf("\n%s\n",base);
+
+    while(1<=stop){
+
+        px= blankx(base); py = blanky(base);
+        // user input
+        scanf("%c",&move);
+        printf("\n%s\n",base);
+        switch (move[0]){
+            case 'w':
+                for(int i=0;i<=nb; i++){
+                    if ( x == px-1 && y == py){
+                        cbase[i] = null[j];
+
+                        if (cbase[i+180]==FALSE){break;}
+                        cbase[i+180] = cbase1[i];
+                        cbase1[i+180] = cbase[i+180];
+                        cbase1[i] = null[j];
+                        j++;
+                    }
+
+                    // the algorithm for x and y axis
+                    if (base[i]== '.'){
+                        y++;
+                    }
+                    if (base[i]== '\n'){
+                        x_++;
+                        y-=2;
+                    if (x_ == 5){
+                    x++;
+                    x_=0;}
+                    }
+                }
+                x = 0; y=0;x_=0; j=0;k=0;
+                break;
+
+            // down
+            case 's':
+                for(int i=0;i<=nb; i++){
+                        // change is (px+1) so if (1,1) == (1+1,1)
+                    if ( x == px+1 && y == py){
+                        cbase[i] = null[j];
+                        // here change is (i-180)
+                        if (cbase[i-180]==FALSE){break;}
+                        cbase[i-180] = cbase1[i];
+                        cbase1[i-180] = cbase[i-180];
+                        cbase1[i] = null[j];
+                        j++;
+                    }
+
+
+                    if (base[i]== '.'){
+                        y++;
+                    }
+                    if (base[i]== '\n'){
+                        x_++;
+                        y-=2;
+                    if (x_ == 5){
+                    x++;
+                    x_=0;}
+                    }
+                }
+                x = 0; y=0;x_=0; j=0;k=0;
+                break;
+
+            // left
+            case 'a':
+                for(int i=0;i<=nb; i++){
+                    // py - 1 for left
+                    if ( x == px && y == py-1){
+                        cbase[i] = null[j];
+                        // i+12 for left in the character array
+                        if (cbase[i+12]==FALSE){break;}
+                        cbase[i+12] = cbase1[i];
+                        cbase1[i+12] = cbase[i+12];
+                        cbase1[i] = null[j];
+                        j++;
+                    }
+
+
+                    if (base[i]== '.'){
+                        y++;
+                    }
+                    if (base[i]== '\n'){
+                        x_++;
+                        y-=2;
+                    if (x_ == 5){
+                    x++;
+                    x_=0;}
+                    }
+                }
+                x = 0; y=0;x_=0; j=0;k=0;
+                break;
+
+            // right
+            case 'd':
+                for(int i=0;i<=nb; i++){
+                        // py + 1
+                    if ( x == px && y == py+1){
+                        cbase[i] = null[j];
+                        // i + 12 for right
+                        if (cbase[i+12]==FALSE){break;}
+                        cbase[i-12] = cbase1[i];
+                        cbase1[i-12] = cbase[i-12];
+                        cbase1[i] = null[j];
+                        j++;
+                    }
+
+
+                    if (base[i]== '.'){
+                        y++;
+                    }
+                    if (base[i]== '\n'){
+                        x_++;
+                        y-=2;
+                    if (x_ == 5){
+                    x++;
+                    x_=0;}
+                    }
+                }
+                x = 0; y=0;x_=0; j=0;k=0;
+                break;
+            case 'k':
+                stop = 0;
+
+
+
+                break;
+
+        }
+        for(fix=0;fix<=nb;fix++){
+            if (cbase[fix] == '.'){
+                x++;}
+            if (cbase[fix] == '.' && x == 3){
+                cbase[fix] = '\n';
+                x=0;
+            }
+            base[fix] = cbase[fix];
+        }
+        for(fix=0;fix<=nb;fix++){
+            cbase[fix] = cbase1[fix];
+        }
+        for(fix=0;fix<=nb;fix++){
+            cbase1[fix] = cbase[fix];
+        }
+        printf("                                                If done Press k\n\n\n\n\n\n\n\n\n\n\n");
+    }
+    char og[]= " --------- . --------- . --------- \n"
+                           "|         |.|         |.|000000000|\n"
+                           "|   {*}   |.|  _____  |.|000000000|\n"
+                           "|         |.| |     | |.|000000000|\n"
+                           " --------- . --------- . --------- \n"
+                           " --------- . --------- . --------- \n"
+                           "|         |.| |     | |.|         |\n"
+                           "|  ||||||||.|||     |||.||||||||  |\n"
+                           "|   |||||||.|||     |||.|||||||   |\n"
+                           " --------- . --------- . --------- \n"
+                           " --------- . --------- . --------- \n"
+                           "|       |||.|||     |||.|||       |\n"
+                           "|        -|.|||     |||.|-        |\n"
+                           "|         |.|---------|.|         |\n"
+                           " --------- . --------- . --------- \n";
+                int count=0;
+                for (int i=0; i<=get(base);i++){
+                    if(base[i]!=og[i]){
+                        count;
+                    }
+                }
+                if(count==0){
+                    printf("PASSED");
+                }else{printf("FAILED");}
+
+}
+
+int blankx(self)
+    char self[];
+{
+    int i,x=0,y=0,y_=0,x_=0;
+    for ( i = 0; self[i] != '0' ; i++){
+        if (self[i]== '.'){
+            y++;
+        }
+        if (self[i]== '\n'){
+            x_++;
+            y-=2;
+        if (x_ == 5){
+        x++;
+        x_=0;}
+        }
+    }
+    return x;
+}
+int blanky(self)
+    char self[];
+{
+    int i,x=0,y=0,y_=0,x_=0;
+    for ( i = 0; self[i] != '0' ; i++){
+        if (self[i]== '.'){
+            y++;
+        }
+        if (self[i]== '\n'){
+            x_++;
+            y-=2;
+        if (x_ == 5){
+        x++;
+        x_=0;}
+        }
+    }
+    return y;
+}
+
+int get(self)
+    char self[];
+{
+    int i;
+    for ( i = 0; self[i]; i++);
+        return i;
+}
+
+    int i;
+    for ( i = 0; self[i]; i++);
+        return i;
+}
