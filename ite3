@@ -12,74 +12,97 @@ int blanky();
 
 
 int main(void){
-
     // initializing the blannn peice of the puzzle
     char null[] =" --------- .|000000000|.|000000000|.|000000000|. --------- .";
    // initializing the display of the puzzle "0" is the one telling where the blank space is in the puzzle
    //         x =     0          1          2                 y
    char base[]=" --------- . --------- . --------- \n"
-               "|||     |||.|         |.|000000000|\n"
-               "|||     |||.||||||||  |.|000000000|\n"      // 0
-               "|---------|.|||||||   |.|000000000|\n"
+               "|         |.|         |.|000000000|\n"
+               "|   {*}   |.|  _____  |.|000000000|\n"      // 0
+               "|         |.| |     | |.|000000000|\n"
                " --------- . --------- . --------- \n"
                " --------- . --------- . --------- \n"
-               "|         |.| |     | |.|       |||\n"
-               "|  ||||||||.|||     |||.|        -|\n"      // 1
-               "|   |||||||.|||     |||.|         |\n"
+               "|         |.| |     | |.|         |\n"
+               "|  ||||||||.|||     |||.||||||||  |\n"      // 1
+               "|   |||||||.|||     |||.|||||||   |\n"
                " --------- . --------- . --------- \n"
                " --------- . --------- . --------- \n"
-               "|||       |.|         |.|         |\n"
-               "|-        |.|   {*}   |.|  _____  |\n"      // 2
-               "|         |.|         |.| |     | |\n"
+               "|       |||.|||     |||.|||       |\n"
+               "|        -|.|---------|.|-        |\n"      // 2
+               "|         |.|         |.|         |\n"
                " --------- . --------- . --------- \n";
 
-
     // a copy of the base that have "." not \n so that it doesnt get buggy
-    char cbase[]=  " --------- . --------- . --------- ."
-                   "|||     |||.|         |.|000000000|."
-                   "|||     |||.||||||||  |.|000000000|."      // 0
-                   "|---------|.|||||||   |.|000000000|."
-                   " --------- . --------- . --------- ."
-                   " --------- . --------- . --------- ."
-                   "|         |.| |     | |.|       |||."
-                   "|  ||||||||.|||     |||.|        -|."      // 1
-                   "|   |||||||.|||     |||.|         |."
-                   " --------- . --------- . --------- ."
-                   " --------- . --------- . --------- ."
-                   "|||       |.|         |.|         |."
-                   "|-        |.|   {*}   |.|  _____  |."      // 2
-                   "|         |.|         |.| |     | |."
-                   " --------- . --------- . --------- .";
+    char cbase[]=" --------- . --------- . --------- ."
+               "|         |.|         |.|000000000|."
+               "|         |.|  _____  |.|000000000|."
+               "|         |.| |     | |.|000000000|."
+               " --------- . --------- . --------- ."
+               " --------- . --------- . --------- ."
+               "|         |.| |     | |.|         |."
+               "|  ||||||||.|||     |||.||||||||  |."
+               "|   |||||||.|||     |||.|||||||   |."
+               " --------- . --------- . --------- ."
+               " --------- . --------- . --------- ."
+               "|       |||.|||     |||.|||       |."
+               "|        -|.|---------|.|-        |."
+               "|         |.|         |.|         |."
+               " --------- . --------- . --------- .";
     // a copy of that copy
     // making moving the puzzle a little easier to code
     char cbase1[get(cbase)];
     for (int i=0;i <= get(cbase);i++){
         cbase1[i]=cbase[i];
     }
+    //
 
+    /*
+     initialization of all of my variables
+     the x, y variables are the most important variable here becasue it can tell where
+     the player is and tells my algorithm to change the positions
+     of my characters where it is needed to
+    */
 
-    int x_=0,x=0, px,py,stop = 1;
-    int y_=0,y=0,nb=get(base);
+    int x_=0,x=0, px,py;
+    int y_=0,y=0,nb;
     int j=0,k=0;
     int fix = 0;
     char move[]="\0";
     // printing the base
     printf("\n%s\n",base);
 
-    while(1<=stop){
 
+    // a loop so that the player can move infinitely until the puzzle is complete
+    while(1==1){
+        // how many characters are there in the base variable
+        nb=get(base);
+        // finding x and y azis of the blank space
+        // i made the function blank_x and blank_y for that reason
+        // then storing them to position or px and py so that it can be read use effeciently
         px= blankx(base); py = blanky(base);
         // user input
         scanf("%c",&move);
+        // printing the outcome of the player
         printf("\n%s\n",base);
-        switch (move[0]){
-            case 'w':
-                for(int i=0;i<=nb; i++){
-                    if ( x == px-1 && y == py){
-                        cbase[i] = null[j];
 
+        // scanning the user input
+        switch (move[0]){
+            // if w ,up
+            case 'w':
+                // a loop for replacing the characters in the base
+                for(int i=0;i<=nb; i++){
+                    // finding the position of the blank space and moving it up
+                    if ( x == px-1 && y == py){
+                        // changing the psotiong of the blank space, so if the position of the blank space is
+                        // (1-1,1) or (0,1) the postion above it
+                        cbase[i] = null[j];
+                        //  180 is the number of characters, if i want to replace the previously blank space
+                        // if the base array has no more position to go, break it and dont change it
                         if (cbase[i+180]==FALSE){break;}
+                        // because you change the copied base you need another variable that is a complete copy
+                        // of that variable to replace, so that it wont be buged like cbase1
                         cbase[i+180] = cbase1[i];
+                        // after changing the copied base, you also need to replace cbase1
                         cbase1[i+180] = cbase[i+180];
                         cbase1[i] = null[j];
                         j++;
@@ -97,6 +120,7 @@ int main(void){
                     x_=0;}
                     }
                 }
+                // returning them into 0 again so that it can be used again in the next move then breaking
                 x = 0; y=0;x_=0; j=0;k=0;
                 break;
 
@@ -186,14 +210,10 @@ int main(void){
                 }
                 x = 0; y=0;x_=0; j=0;k=0;
                 break;
-            case 'k':
-                stop = 0;
-
-
-
-                break;
-
         }
+        //restructuring all the chararacter arrays and putting them into
+        // the original base variable, changing cbase so that the 2nd "." will
+        // turn into "\n" so that it can be readable
         for(fix=0;fix<=nb;fix++){
             if (cbase[fix] == '.'){
                 x++;}
@@ -209,35 +229,14 @@ int main(void){
         for(fix=0;fix<=nb;fix++){
             cbase1[fix] = cbase[fix];
         }
-        printf("                                                If done Press k\n\n\n\n\n\n\n\n\n\n\n");
-    }
-    char og[]= " --------- . --------- . --------- \n"
-                           "|         |.|         |.|000000000|\n"
-                           "|   {*}   |.|  _____  |.|000000000|\n"
-                           "|         |.| |     | |.|000000000|\n"
-                           " --------- . --------- . --------- \n"
-                           " --------- . --------- . --------- \n"
-                           "|         |.| |     | |.|         |\n"
-                           "|  ||||||||.|||     |||.||||||||  |\n"
-                           "|   |||||||.|||     |||.|||||||   |\n"
-                           " --------- . --------- . --------- \n"
-                           " --------- . --------- . --------- \n"
-                           "|       |||.|||     |||.|||       |\n"
-                           "|        -|.|||     |||.|-        |\n"
-                           "|         |.|---------|.|         |\n"
-                           " --------- . --------- . --------- \n";
-                int count=0;
-                for (int i=0; i<=get(base);i++){
-                    if(base[i]!=og[i]){
-                        count;
-                    }
-                }
-                if(count==0){
-                    printf("PASSED");
-                }else{printf("FAILED");}
 
+    }
 }
 
+
+
+
+// function to find the blank space for x axis
 int blankx(self)
     char self[];
 {
@@ -256,6 +255,13 @@ int blankx(self)
     }
     return x;
 }
+
+
+
+
+
+
+// function to find the blank space for y axis
 int blanky(self)
     char self[];
 {
@@ -275,6 +281,8 @@ int blanky(self)
     return y;
 }
 
+
+// how many characters are inside the array
 int get(self)
     char self[];
 {
